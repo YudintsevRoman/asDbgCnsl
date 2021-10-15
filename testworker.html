@@ -44,26 +44,31 @@
             '})();'
         ], {type: 'text/javascript'}));
         let tw = new Worker(codeworker);
+        let twc = 0;
         tw.onmessage = function (e) {
             console.log("got");
             tw.postMessage("request_frame");
+            twc++;
+            info.innerText = "go with "+twc;
         }
         function startTest() {
             tw.postMessage("request_frame");
-            info.innerHtml = "started ";
+            info.innerText = "started ";
+            twc = 0
         }
         function stopTest() {
             tw.postMessage("cancel_frame");
-            info.innerHtml = "stoped ";
+            info.innerText = "stoped "+twc;
         }
 
-        info = document.getElementById("info");
-
+        function getInfo() {
+            info = document.getElementById("info");
+        }
     </script>
 </head>
-<body>
-<button style="width: 300px; height: 200px;" onclick="startTest()">start</button>
-<button style="width: 300px; height: 200px;" onclick="stopTest()">stop</button>
+<body onload="getInfo()">
+<button style="width: 300px; height: 200px; font-size: -webkit-xxx-large;xxx-large;" onclick="startTest()">start</button>
+<button style="width: 300px; height: 200px; font-size: -webkit-xxx-large;xxx-large;" onclick="stopTest()">stop</button>
 <div id="info"></div>
 </body>
 </html>
