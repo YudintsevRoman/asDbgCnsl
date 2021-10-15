@@ -1,6 +1,6 @@
 {
-  "name": "Bingo Blitz Web",
-  "short_name": "Bingo Blitz Web",
+  "name": "Worker's test",
+  "short_name": "Worker's test",
   "start_url": "",
   "scope": "/",
   "display": "fullscreen",
