@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+<head>
+    <title>Worker's test</title>
+    <script>
+        let codeworker = URL.createObjectURL(new Blob([
+            '!(function() {\n' +
+            '    var lastTime = 0;\n' +
+            '    var id = undefined;\n' +
+            '\n' +
+            '    function cancelAnimationFrame() {\n' +
+            '        clearTimeout(id);\n' +
+            '        id = undefined;\n' +
+            '    }\n' +
+            '\n' +
+            '    function requestAnimationFrame(callback) {\n' +
+            '        if (id !== undefined) {\n' +
+            '            cancelAnimationFrame();\n' +
+            '        }\n' +
+            '\n' +
+            '        var currTime = Date.now();\n' +
+            '        var timeToCall = Math.max(0, 16 - (currTime - lastTime));\n' +
+            '\n' +
+            '        id = setTimeout(function () {\n' +
+            '            id = undefined;\n' +
+            '            callback(currTime + timeToCall);\n' +
+            '        }, timeToCall);\n' +
+            '        lastTime = currTime + timeToCall;\n' +
+            '    }\n' +
+            '\n' +
+            '    function onEnterFrame(timestamp) {\n' +
+            '        postMessage(timestamp);\n' +
+            '    }\n' +
+            '\n' +
+            '    onmessage = function (msg) {\n' +
+            '        var cmd = msg.data;\n' +
+            '        if (cmd === "request_frame") {\n' +
+            '            requestAnimationFrame(onEnterFrame);\n' +
+            '        } else if (cmd === "cancel_frame") {\n' +
+            '            cancelAnimationFrame();\n' +
+            '        }\n' +
+            '    };\n' +
+            '})();'
+        ], {type: 'text/javascript'}));
+        let tw = new Worker(codeworker);
+        tw.onmessage = function (e) {
+            console.log("got");
+            tw.postMessage("request_frame");
+        }
+        function startTest() {
+            tw.postMessage("request_frame");
+        }
+        function stopTest() {
+            tw.postMessage("cancel_frame");
+        }
+    </script>
+</head>
+<body>
+<button onclick="startTest()">start</button>
+<button onclick="stopTest()">stop</button>
+<div id="info"></div>
+</body>
+</html>
