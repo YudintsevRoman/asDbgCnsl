@@ -50,15 +50,20 @@
         }
         function startTest() {
             tw.postMessage("request_frame");
+            info.innerHtml = "started ";
         }
         function stopTest() {
             tw.postMessage("cancel_frame");
+            info.innerHtml = "stoped ";
         }
+
+        info = document.getElementById("info");
+
     </script>
 </head>
 <body>
-<button onclick="startTest()">start</button>
-<button onclick="stopTest()">stop</button>
+<button style="width: 300px; height: 200px;" onclick="startTest()">start</button>
+<button style="width: 300px; height: 200px;" onclick="stopTest()">stop</button>
 <div id="info"></div>
 </body>
 </html>
