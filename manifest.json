@@ -1,0 +1,10 @@
+{
+  "name": "Bingo Blitz Web",
+  "short_name": "Bingo Blitz Web",
+  "start_url": "",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#00227d",
+  "theme_color": "#1c00ad"
+}
